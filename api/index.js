@@ -1,6 +1,6 @@
 import { addonBuilder } from "stremio-addon-sdk";
 
-// 1️⃣ Create the manifest
+// 1️⃣ Stremio manifest
 const manifest = {
   id: "org.telefe.live",
   version: "1.0.0",
@@ -9,14 +9,18 @@ const manifest = {
   resources: ["catalog", "stream"],
   types: ["tv"],
   catalogs: [
-    { type: "tv", id: "telefe_catalog", name: "Telefe Channel" }
+    {
+      type: "tv",
+      id: "telefe_catalog",
+      name: "Telefe Channel"
+    }
   ]
 };
 
-// 2️⃣ Create the addon builder
+// 2️⃣ Create addon builder
 const builder = new addonBuilder(manifest);
 
-// 3️⃣ Define catalog handler
+// 3️⃣ Catalog handler
 builder.defineCatalogHandler(() =>
   Promise.resolve({
     metas: [
@@ -31,7 +35,7 @@ builder.defineCatalogHandler(() =>
   })
 );
 
-// 4️⃣ Define stream handler
+// 4️⃣ Stream handler
 builder.defineStreamHandler(({ id }) =>
   id === "telefe"
     ? Promise.resolve({
@@ -45,13 +49,14 @@ builder.defineStreamHandler(({ id }) =>
     : Promise.resolve({ streams: [] })
 );
 
-// 5️⃣ ✅ Vercel-compatible serverless export
+// 5️⃣ Vercel-compatible serverless export
 export default async function handler(req, res) {
   try {
     const interfaceHandler = builder.getInterface();
-    interfaceHandler(req, res); // Connect/Express handler wrapped inside Vercel function
+    // Pass Vercel req/res objects to builder handler
+    await interfaceHandler(req, res);
   } catch (err) {
-    console.error(err);
+    console.error("Serverless function error:", err);
     res.status(500).json({ error: "Internal Server Error" });
   }
 }
