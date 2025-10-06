@@ -15,6 +15,7 @@ const manifest = {
     }
   ]
 };
+
 const builder = new addonBuilder(manifest);
 
 builder.defineCatalogHandler(() =>
@@ -45,4 +46,8 @@ builder.defineStreamHandler(({ id }) =>
     : Promise.resolve({ streams: [] })
 );
 
-export default builder.getInterface();
+// ✅ Wrap the addon interface in a Vercel serverless handler
+export default async function handler(req, res) {
+  const interfaceHandler = builder.getInterface();
+  return interfaceHandler(req, res);
+}
