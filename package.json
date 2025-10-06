@@ -1,11 +1,8 @@
 {
-  "name": "televiarg",
+  "name": "telearg",
   "version": "1.0.0",
   "description": "Telefe addon for Stremio",
   "type": "module",
-  "scripts": {
-    "start": "node api/index.js"
-  },
   "dependencies": {
     "stremio-addon-sdk": "^1.3.0"
   }
