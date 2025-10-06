@@ -21,8 +21,7 @@ builder.defineCatalogHandler(() =>
         id: "telefe",
         type: "tv",
         name: "Telefe",
-        poster:
-          "https://upload.wikimedia.org/wikipedia/commons/1/11/Telefe_Actual.png",
+        poster: "https://upload.wikimedia.org/wikipedia/commons/1/11/Telefe_Actual.png",
         description: "Telefe en Vivo"
       }
     ]
@@ -37,9 +36,8 @@ builder.defineStreamHandler(({ id }) =>
     : Promise.resolve({ streams: [] })
 );
 
-// Vercel-compatible export
-export default async function handler(req, res) {
+// Vercel serverless export
+export default function handler(req, res) {
   const interfaceHandler = builder.getInterface();
-  // Convert Vercel req/res to Node req/res
   interfaceHandler(req, res);
 }
