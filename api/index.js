@@ -16,6 +16,7 @@ const manifest = {
   ]
 };
 
+
 const builder = new addonBuilder(manifest);
 
 // Catalog handler
