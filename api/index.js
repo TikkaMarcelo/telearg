@@ -50,5 +50,5 @@ builder.defineStreamHandler(({ id }) => {
   }
 });
 
-// Export for Vercel serverless
+// Export the serverless function for Vercel
 export default builder.getInterface();
