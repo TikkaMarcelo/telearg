@@ -16,12 +16,10 @@ const manifest = {
   ]
 };
 
-
 const builder = new addonBuilder(manifest);
 
-// Catalog handler
-builder.defineCatalogHandler(() => {
-  return Promise.resolve({
+builder.defineCatalogHandler(() =>
+  Promise.resolve({
     metas: [
       {
         id: "telefe",
@@ -32,24 +30,20 @@ builder.defineCatalogHandler(() => {
         description: "Telefe en Vivo"
       }
     ]
-  });
-});
+  })
+);
 
-// Stream handler
-builder.defineStreamHandler(({ id }) => {
-  if (id === "telefe") {
-    return Promise.resolve({
-      streams: [
-        {
-          title: "Telefe en Vivo",
-          url: "https://la14hd.com/vivo/canales.php?stream=telefe"
-        }
-      ]
-    });
-  } else {
-    return Promise.resolve({ streams: [] });
-  }
-});
+builder.defineStreamHandler(({ id }) =>
+  id === "telefe"
+    ? Promise.resolve({
+        streams: [
+          {
+            title: "Telefe en Vivo",
+            url: "https://la14hd.com/vivo/canales.php?stream=telefe"
+          }
+        ]
+      })
+    : Promise.resolve({ streams: [] })
+);
 
-// Export the serverless function for Vercel
 export default builder.getInterface();
