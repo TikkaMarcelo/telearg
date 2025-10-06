@@ -17,7 +17,7 @@ const manifest = {
   ]
 };
 
-// Catalog (the tile you’ll see)
+// Catalog endpoint
 app.get("/catalog/:type/:id.json", (req, res) => {
   res.json({
     metas: [
@@ -25,14 +25,15 @@ app.get("/catalog/:type/:id.json", (req, res) => {
         id: "telefe",
         type: "tv",
         name: "Telefe",
-        poster: "https://upload.wikimedia.org/wikipedia/commons/1/11/Telefe_Actual.png?20160318191557",
+        poster:
+          "https://upload.wikimedia.org/wikipedia/commons/1/11/Telefe_Actual.png?20160318191557",
         description: "Telefe en Vivo"
       }
     ]
   });
 });
 
-// Stream (the video link Stremio will play)
+// Stream endpoint
 app.get("/stream/:type/:id.json", (req, res) => {
   if (req.params.id === "telefe") {
     res.json({
@@ -48,10 +49,8 @@ app.get("/stream/:type/:id.json", (req, res) => {
   }
 });
 
-// Manifest (addon info)
+// Manifest endpoint
 app.get("/manifest.json", (req, res) => res.json(manifest));
 
-// Default port for Vercel (important!)
-app.listen(process.env.PORT || 3000, () => {
-  console.log("Addon running on port 3000");
-});
+// **Vercel serverless export**
+export default app;
