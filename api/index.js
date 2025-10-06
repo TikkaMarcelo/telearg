@@ -15,7 +15,6 @@ const manifest = {
     }
   ]
 };
-
 const builder = new addonBuilder(manifest);
 
 builder.defineCatalogHandler(() =>
