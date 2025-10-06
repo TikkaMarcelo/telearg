@@ -1,5 +1,4 @@
-import express from "express";
-const app = express();
+import { addonBuilder } from "stremio-addon-sdk";
 
 const manifest = {
   id: "org.telefe.live",
@@ -17,9 +16,11 @@ const manifest = {
   ]
 };
 
-// Catalog endpoint
-app.get("/catalog/:type/:id.json", (req, res) => {
-  res.json({
+const builder = new addonBuilder(manifest);
+
+// Catalog handler
+builder.defineCatalogHandler(() => {
+  return Promise.resolve({
     metas: [
       {
         id: "telefe",
@@ -33,10 +34,10 @@ app.get("/catalog/:type/:id.json", (req, res) => {
   });
 });
 
-// Stream endpoint
-app.get("/stream/:type/:id.json", (req, res) => {
-  if (req.params.id === "telefe") {
-    res.json({
+// Stream handler
+builder.defineStreamHandler(({ id }) => {
+  if (id === "telefe") {
+    return Promise.resolve({
       streams: [
         {
           title: "Telefe en Vivo",
@@ -45,12 +46,9 @@ app.get("/stream/:type/:id.json", (req, res) => {
       ]
     });
   } else {
-    res.json({ streams: [] });
+    return Promise.resolve({ streams: [] });
   }
 });
 
-// Manifest endpoint
-app.get("/manifest.json", (req, res) => res.json(manifest));
-
-// Vercel requires a default export of the handler
-export default app;
+// Export for Vercel serverless
+export default builder.getInterface();
