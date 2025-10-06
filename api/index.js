@@ -8,11 +8,7 @@ const manifest = {
   resources: ["catalog", "stream"],
   types: ["tv"],
   catalogs: [
-    {
-      type: "tv",
-      id: "telefe_catalog",
-      name: "Telefe Channel"
-    }
+    { type: "tv", id: "telefe_catalog", name: "Telefe Channel" }
   ]
 };
 
@@ -26,7 +22,7 @@ builder.defineCatalogHandler(() =>
         type: "tv",
         name: "Telefe",
         poster:
-          "https://upload.wikimedia.org/wikipedia/commons/1/11/Telefe_Actual.png?20160318191557",
+          "https://upload.wikimedia.org/wikipedia/commons/1/11/Telefe_Actual.png",
         description: "Telefe en Vivo"
       }
     ]
@@ -36,18 +32,14 @@ builder.defineCatalogHandler(() =>
 builder.defineStreamHandler(({ id }) =>
   id === "telefe"
     ? Promise.resolve({
-        streams: [
-          {
-            title: "Telefe en Vivo",
-            url: "https://la14hd.com/vivo/canales.php?stream=telefe"
-          }
-        ]
+        streams: [{ title: "Telefe en Vivo", url: "https://la14hd.com/vivo/canales.php?stream=telefe" }]
       })
     : Promise.resolve({ streams: [] })
 );
 
-// ✅ Wrap the addon interface in a Vercel serverless handler
+// Vercel-compatible export
 export default async function handler(req, res) {
   const interfaceHandler = builder.getInterface();
-  return interfaceHandler(req, res);
+  // Convert Vercel req/res to Node req/res
+  interfaceHandler(req, res);
 }
